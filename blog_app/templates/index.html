@@ -1,0 +1,11 @@
+<h1>hello {{name}}</h1>
+
+<form action="/"  name="form1" method="post">
+    Введите текст:<br />
+    <textarea name="message" cols="80" rows="10"></textarea>
+    
+    <input type="submit" value="Отправить"/>
+    {% for message in messages %}
+    <h1>{{ message }}</h1>
+    {% endfor %}
+</form>
