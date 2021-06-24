@@ -25,9 +25,23 @@ class Post(Base):
         return "<Post( tittle='%s', body='%s', username='%s')>" % (
                          self.tittle, self.body,self.username)
 
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    username = Column(String,unique=True)
+    password = Column(String)
 
+    def __repr__(self):
+        return "'<Post( username='%s')>" % ( self.username)
 
+class Comment(Base):
+    __tablename__ = 'comments'
+    id = Column(Integer, primary_key=True)
+    username = Column(String)
+    comment = Column(String)
 
+    def __repr__(self):
+        return "'<Post( comment='%s')>" % ( self.comment)
 
 def create_session():
     engine = create_engine('sqlite:///blogapp.db')
