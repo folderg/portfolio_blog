@@ -1,11 +1,43 @@
 <h1>hello {{name}}</h1>
 
-<form action="/"  name="form1" method="post">
+<form >
     Введите текст:<br />
-    <textarea name="message" cols="80" rows="10"></textarea>
+    <textarea  id="message_text" name="message" cols="80" rows="10" placeholder="Введите сообщение..."></textarea>
     
-    <input type="submit" value="Отправить"/>
+    <input   type="button" onclick="sendMessage()"  value="Отправить"/>
+
+
+
+
+
     {% for message in messages %}
     <h1>{{ message }}</h1>
     {% endfor %}
 </form>
+
+
+
+<script type="application/javascript">
+    const messageTextInput = document.getElementById("message_text");
+    let can_send_message = true;
+    const sendMessage = () => {
+        if (!can_send_message) return;
+        let text = messageTextInput.value;
+        can_send_message = false;
+        fetch("/api/message.create", {
+            "method": "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            "body": JSON.stringify({
+                "text": text,
+            })
+        })
+        .then(data => {
+                can_send_message = true;
+                location.reload();
+            })
+            
+        messageTextInput.value = "";
+    }
+</script>
