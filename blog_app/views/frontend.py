@@ -14,13 +14,12 @@ async def index(request):
     return {'name': 'username', 'messages' : Messages}
 
 
-async def create_message(self):
+async def create_post(self):
     try:
         data = await self.json()
         session = db.create_session()
         note =db.Post()
 
-        print (data)
         note.tittle= data.get('tittle')
         note.body = data.get('text')
         note.username = data.get('username')
@@ -41,7 +40,6 @@ async def create_user(self):
         session = db.create_session()
         note =db.User()
         
-        print (data)
         note.password = data.get('password')
         note.username = data.get('username')
         session.add(note)
@@ -61,7 +59,6 @@ async def create_comment(self):
         session = db.create_session()
         note =db.Comment()
         
-        print (data)
         note.comment = data.get('comment')
         note.username = data.get('username')
         session.add(note)
@@ -72,3 +69,24 @@ async def create_comment(self):
     except Exception as e:
         response_obj={'status':'failed','message':str(e)}
         return web.Response(text=json.dumps(response_obj), status=500)
+
+
+async def get_messages(self):
+    try:
+        session = db.create_session()
+        if(self.query):
+            data = int(self.query['post'])
+            print(data)
+            posts = session.query(db.Post).filter(db.User.id==int(data))
+        else:
+            posts = session.query(db.Post).all()
+        
+        session.close()
+        response_obj=[]
+        for n in posts:
+            response_obj.append({ n.id: n.body})
+        return web.Response(text=json.dumps(response_obj), status=200)
+    except Exception as e:
+        response_obj={'status':'failed','message':str(e)}
+        return web.Response(text=json.dumps(response_obj), status=500)
+
