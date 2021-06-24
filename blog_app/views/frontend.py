@@ -19,14 +19,15 @@ class Create_message(web.View):
         session = db.create_session()
         note =db.Post()
         
-        note.tittle= 'tittle'
+        print (data)
+        note.tittle= data.get('tittle')
         note.body = data.get('text')
+        note.username = data.get('username')
 
         session.add(note)
         session.commit()
         session.close()
 
-        print (data)
         Messages.append(data.get('text'))
         response_obj={'status':'ok'}
         return web.Response(text=json.dumps(response_obj), status=200)

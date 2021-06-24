@@ -6,22 +6,24 @@ Base = declarative_base()
 metadata = MetaData()
 
 
-post = Table(
-    'post', metadata,
-    Column('id', Integer,primary_key=True),
-    Column('tittle', VARCHAR,nullable=True),
-    Column('body', Text,)
-)
+#post = Table(
+#    'post', metadata,
+#    Column('id', Integer,primary_key=True),
+#    Column('tittle', VARCHAR,nullable=True),
+#    Column('body', Text,)
+#    Column('username', nullable=False,)
+#)
 
 class Post(Base):
     __tablename__ = 'post'
     id = Column(Integer, primary_key=True)
     tittle = Column(String)
     body = Column(String)
+    username = Column(String)
 
     def __repr__(self):
-        return "<Post( tittle='%s', body='%s')>" % (
-                         self.tittle, self.body)
+        return "<Post( tittle='%s', body='%s', username='%s')>" % (
+                         self.tittle, self.body,self.username)
 
 
 
@@ -39,14 +41,8 @@ if __name__ == '__main__':
     session=create_session()
     
     post = Post()
-    post.tittle='asdad'
-    post.body='gggggg'
-    
-    
-    #note = Post( tittle='first_tittle', body='a looooooooong post')
-    #session.add(note)
-    ##our_note = session.query(Post).filter_by(tittle='first_tittle').first()
-    #print(session.add(note))
+    post.tittle='tittle'
+    post.body='body'
     session.add(post)
     session.commit()
 

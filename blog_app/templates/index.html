@@ -2,8 +2,9 @@
 
 <form >
     Введите текст:<br />
-    <textarea  id="message_text" name="message" cols="80" rows="10" placeholder="Введите сообщение..."></textarea>
-    
+    <textarea  id="message_tittle" name="message" cols="50" rows="1" placeholder="заголовок"></textarea><br />
+    <textarea  id="message_text" name="message" cols="50" rows="10" placeholder="Введите сообщение..."></textarea><br />
+    <textarea  id="username" name="message" cols="50" rows="1" placeholder="username"></textarea><br />
     <input   type="button" onclick="sendMessage()"  value="Отправить"/>
 
 
@@ -19,10 +20,15 @@
 
 <script type="application/javascript">
     const messageTextInput = document.getElementById("message_text");
+    const usernameTextInput = document.getElementById("username");
+    const tittleTextInput = document.getElementById("message_tittle");
     let can_send_message = true;
     const sendMessage = () => {
         if (!can_send_message) return;
+
         let text = messageTextInput.value;
+        let tittle = tittleTextInput.value;
+        let username = usernameTextInput.value;
         can_send_message = false;
         fetch("/api/message.create", {
             "method": "POST",
@@ -30,7 +36,9 @@
                 'Content-Type': 'application/json;charset=utf-8'
             },
             "body": JSON.stringify({
+                "tittle": tittle,
                 "text": text,
+                "username": username,
             })
         })
         .then(data => {
